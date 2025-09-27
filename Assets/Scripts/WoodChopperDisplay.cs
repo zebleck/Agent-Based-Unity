@@ -19,9 +19,33 @@ public class WoodChopperDisplay : MonoBehaviour
     {
         if (woodChopper != null && textMeshProUGUI != null)
         {
-            string stateString = woodChopper.currentState.ToString();
             int wood = woodChopper.wood;
-            textMeshProUGUI.text = $"State: {stateString}\nWood: {wood}";
+
+            // Add more descriptive text for building states
+            string displayText = "";
+            switch(woodChopper.currentState)
+            {
+                case WoodChopper.State.Searching:
+                    displayText = "Searching for Trees";
+                    break;
+                case WoodChopper.State.Chopping:
+                    displayText = "Chopping Trees";
+                    break;
+                case WoodChopper.State.SelectingBuildSpot:
+                    displayText = "Selecting Build Spot";
+                    break;
+                case WoodChopper.State.MovingToBuildSpot:
+                    displayText = "Moving to Build";
+                    break;
+                case WoodChopper.State.Building:
+                    displayText = "Building";
+                    break;
+                case WoodChopper.State.Idle:
+                    displayText = "Idle (No trees)";
+                    break;
+            }
+
+            textMeshProUGUI.text = $"State: {displayText}\nWood: {wood}";
         }
     }
 }
