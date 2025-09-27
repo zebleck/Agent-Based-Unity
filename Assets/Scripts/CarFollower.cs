@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class CarFollower : MonoBehaviour
 {
@@ -9,7 +10,6 @@ public class CarFollower : MonoBehaviour
 
     private int currentIndex = 0;
 
-    private bool isForward = true;
     public float bobFrequency = 2f; // how fast the bobbing is
     public float bobAmplitude = 0.1f; // how high the bobbing is
 
@@ -36,43 +36,82 @@ public class CarFollower : MonoBehaviour
 
     void Update()
     {
-        if (waypoints.Length == 0) return;
-
-        Transform target = waypoints[currentIndex];
-
-        // Only operate in xz plane
-        Vector3 currentXZ = new Vector3(transform.position.x, 0f, transform.position.z);
-        Vector3 targetXZ = new Vector3(target.position.x, 0f, target.position.z);
-        Vector3 directionXZ = targetXZ - currentXZ;
-
-        // Move towards current waypoint in xz only
-        Vector3 moveXZ = directionXZ.normalized * speed * Time.deltaTime;
-        Vector3 newXZ = currentXZ + moveXZ;
-        transform.position = new Vector3(newXZ.x, transform.position.y, newXZ.z);
-
-        // Rotate to face direction in xz only
-        if (directionXZ.magnitude > 0.1f)
-        {
-            Quaternion lookRotation = Quaternion.LookRotation(directionXZ);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
-        }
-
-        // Check if we reached the waypoint in xz only
-        if (directionXZ.magnitude < reachThreshold)
-        {
-            if (currentIndex == waypoints.Length - 1 && isForward)
-            {
-                isForward = false;
-            }
-            else if (currentIndex == 0 && !isForward)
-            {
-                isForward = true;
-            }
-            currentIndex += isForward ? 1 : -1;
-        }
-
         // Bob the car up and down slightly
         Vector3 pos = new Vector3(transform.position.x, startPos.y + Mathf.Sin(Time.time * bobFrequency) * bobAmplitude, transform.position.z);
         transform.position = pos;
+    }
+
+    // Call this externally to move forward through all remaining waypoints
+    public IEnumerator MoveForwardCoroutine()
+    {
+        if (waypoints.Length == 0 || currentIndex >= waypoints.Length - 1)
+            yield break;
+
+        // Move through all waypoints from currentIndex+1 to the end
+        while (currentIndex < waypoints.Length - 1)
+        {
+            currentIndex++;
+            Transform target = waypoints[currentIndex];
+
+            while (true)
+            {
+                Vector3 currentXZ = new Vector3(transform.position.x, 0f, transform.position.z);
+                Vector3 targetXZ = new Vector3(target.position.x, 0f, target.position.z);
+                Vector3 directionXZ = targetXZ - currentXZ;
+
+                if (directionXZ.magnitude < reachThreshold)
+                    break;
+
+                Vector3 moveXZ = directionXZ.normalized * speed * Time.deltaTime;
+                Vector3 newXZ = currentXZ + moveXZ;
+                transform.position = new Vector3(newXZ.x, transform.position.y, newXZ.z);
+
+                // Rotate to face direction in xz only
+                if (directionXZ.magnitude > 0.1f)
+                {
+                    Quaternion lookRotation = Quaternion.LookRotation(directionXZ);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+                }
+
+                yield return null;
+            }
+        }
+    }
+
+    // Call this externally to move backward through all previous waypoints
+    public IEnumerator MoveBackwardCoroutine()
+    {
+        if (waypoints.Length == 0 || currentIndex <= 0)
+            yield break;
+
+        // Move through all waypoints from currentIndex-1 to 0
+        while (currentIndex > 0)
+        {
+            currentIndex--;
+            Transform target = waypoints[currentIndex];
+
+            while (true)
+            {
+                Vector3 currentXZ = new Vector3(transform.position.x, 0f, transform.position.z);
+                Vector3 targetXZ = new Vector3(target.position.x, 0f, target.position.z);
+                Vector3 directionXZ = targetXZ - currentXZ;
+
+                if (directionXZ.magnitude < reachThreshold)
+                    break;
+
+                Vector3 moveXZ = directionXZ.normalized * speed * Time.deltaTime;
+                Vector3 newXZ = currentXZ + moveXZ;
+                transform.position = new Vector3(newXZ.x, transform.position.y, newXZ.z);
+
+                // Rotate to face direction in xz only
+                if (directionXZ.magnitude > 0.1f)
+                {
+                    Quaternion lookRotation = Quaternion.LookRotation(directionXZ);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+                }
+
+                yield return null;
+            }
+        }
     }
 }
