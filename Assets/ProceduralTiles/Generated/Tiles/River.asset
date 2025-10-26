@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e71ebfdd92a51043be0f6ee64229708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Material: {fileID: 0}
+  CollisionLayer: 4
+  NavigationArea: 1
+  PreviewOrientation: {x: 0, y: 90}
+  EightBitMask: 0
+  NoBorder: 1
+  Orientation2D: 0
+  Isolate: 0
+  Variants:
+  - Info:
+      Mesh: {fileID: 4300000, guid: 754b757b106780a4ca23e73294aa0e32, type: 2}
+      CollisionMesh: {fileID: 0}
+      Collision: 2
+    Mask:
+      Type: 0
+      Mask: 0
+      Variants: 
+  - Info:
+      Mesh: {fileID: 4300000, guid: 71ac8586134df9846931d8083a0fdaf8, type: 2}
+      CollisionMesh: {fileID: 0}
+      Collision: 2
+    Mask:
+      Type: 1
+      Mask: 64
+      Variants: 080000000200000010000000
+  - Info:
+      Mesh: {fileID: 4300000, guid: 61ef5eabdeeb5264fbceb0ff7bddfab5, type: 2}
+      CollisionMesh: {fileID: 0}
+      Collision: 2
+    Mask:
+      Type: 1
+      Mask: 66
+      Variants: 180000004200000018000000
+  - Info:
+      Mesh: {fileID: 4300000, guid: 6fcda77e677f5284b9faa54e3358f3d8, type: 2}
+      CollisionMesh: {fileID: 0}
+      Collision: 2
+    Mask:
+      Type: 1
+      Mask: 80
+      Variants: 480000000a00000012000000
+  - Info:
+      Mesh: {fileID: 4300000, guid: 332ec0e3036eeaa419667c6ef5498ff3, type: 2}
+      CollisionMesh: {fileID: 0}
+      Collision: 2
+    Mask:
+      Type: 1
+      Mask: 88
+      Variants: 4a0000001a00000052000000
+  - Info:
+      Mesh: {fileID: 4300000, guid: 509c0ef447ba4fa499dffb28d602b6df, type: 2}
+      CollisionMesh: {fileID: 0}
+      Collision: 2
+    Mask:
+      Type: 0
+      Mask: 90
+      Variants: 
