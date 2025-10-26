@@ -4,6 +4,7 @@ Temp/
 Obj/
 Build/
 Logs/
+.claude/
 
 # Visual Studio Code
 .vscode/
